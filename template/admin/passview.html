@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>信息操作页面</title>
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style2.css" media="all" />
+<link type="text/css" media="screen" charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style.account-1.1.css" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/personal.record-1.0.css" media="all" />
+<style type="text/css"> 
+.tip-faq{
+	clear:both;
+	margin-top:0px;
+}
+#J-table-consume{
+	margin-bottom:40px;
+}
+.ui-form-tips .m-cue{
+	 background-position: -27px -506px;
+	 *background-position: -27px -505px;
+}
+#J-set-date a{
+	font-family:宋体;
+}
+</style>
+<script type="text/javascript" src="__ADMIN__/js/jquery.min.js"></script>
+</head>
+<body>
+<div id="container" class="ui-container">
+  <div id="content" class="ui-content fn-clear" coor="default" coor-rate="0.02">
+    <form method="post" action="#" onsubmit="return check_pwd();">
+      <div class="ui-grid-21 ui-grid-right fn-clear" id="J-table-consume" coor="consumelist">
+      <div class="ui-tab">
+        <div class="ui-tab-trigger">
+          <ul class="fn-clear">
+            <li class="ui-tab-trigger-item">
+            <a href="/admin.php/Info/index" class="ui-tab-trigger-text">详细信息</a>
+            </li>
+            <li class="ui-tab-trigger-item ui-tab-trigger-item-current">
+            <a class="ui-tab-trigger-text">修改密码</a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-tab-container" id="myScene">
+			<div class="ui-tab-container-item ui-tab-container-item-current" style='padding:15px 0'>
+				<!-- 修改密码 -->
+				<table width="50%" cellspacing="1" cellpadding="0" border="0" style="margin:0 auto;border-bottom:#4686c6 solid 0px;" class="TableBlock">
+				<tbody>
+				  <tr>
+					<td width="20%" height="40" style="padding-left:50px;" class="TableContent">原密码</td>
+					<td width="80%" class="TableContent">
+					<input type="password" value="" size="40" class="BigInput" name="oldpassword" id='oldpassword' >
+					<font color="#FF0000" >*</font>
+					</td>
+				  </tr>
+				  <tr>
+					<td width="20%" height="40" style="padding-left:50px;" class="TableContent">新密码</td>
+					<td width="80%" class="TableContent">
+					<input type="password" value="" size="40" class="BigInput" name="password" id='password'>
+					<font color="#FF0000">*</font>
+					</td>
+				  </tr>
+				  <tr>
+					<td width="20%" height="40" style="padding-left:50px;" class="TableContent">确认密码</td>
+					<td width="80%" class="TableContent">
+					<input type="password" value="" size="40" class="BigInput" name="password2" id='password2'>
+					<font color="#FF0000">*</font>
+					</td>
+				  </tr>
+				  
+				  
+				  <tr align="center" class="TableControl">
+					  <td height="35" colspan="2">
+						<input type="submit" class="BigButton" value="修改" name="Submit"> 
+						<input type="hidden" value="41" name="id">
+					  </td>
+					</tr>
+				</tbody>
+				</table>
+				<script>
+				function check_pwd(){
+					oldpassword = $('#oldpassword').val();
+					password = $('#password').val();
+					password2 = $('#password2').val();
+					if(oldpassword == ''){
+						alert('请输入原密码!');
+						return false;
+					}else if(password == ''){
+						alert('请输入新密码!');
+						return false;
+					}else if(password != password2){
+						alert('新密码与确认密码不一致!');
+						return false;
+					}
+				}
+				</script>
+            </div>
+            <!-- 修改密码end -->
+        </div>
+      </div>
+      <!-- /交易记录-->
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

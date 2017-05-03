@@ -1,0 +1,1 @@
+正则查询  SELECT * FROM user  REGEXP '正则表达式';

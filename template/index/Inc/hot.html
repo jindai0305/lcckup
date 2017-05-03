@@ -1,0 +1,20 @@
+						<aside id="hot_article">
+							<div class="panel panel-zyn hidden-xs">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-link newicon"></span>浏览排行
+									<span class="panel-remove glyphicon glyphicon-remove-circle"></span>
+									<span class="panel-toggle glyphicon glyphicon-upload"></span>
+								</div>
+								<ul class="list-group list-group-flush" id="zxwz">
+								<template v-for="item in deilDataList">
+									<li class="list-group-item">
+										<span class="post-title">
+											<a :href="item.infourl" :title="item.title" v-text="item.title">
+											</a>
+										</span>
+										<span class="badge" v-text="item.liulan_num"></span>
+									</li>
+									</template>
+								</ul>
+							</div>
+						</aside>

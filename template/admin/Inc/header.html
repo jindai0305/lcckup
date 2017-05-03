@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<LINK href="__ADMIN__/css/admin.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.show{
+    background:url(__ADMIN__/images/header_bg.gif)no-repeat;  
+    width:100%;  
+    height:100%;  
+    background-size:100% 100%;  
+    position:absolute;  
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='__ADMIN__/images/header_bg.gif',sizingMethod='scale');  
+}
+</style>
+</HEAD>
+<BODY class="show">
+<TABLE cellSpacing=0 cellPadding=0 width="86%" border=0 style="margin:0 auto" align="center">
+  <TR height=89>
+    <TD style="FONT-WEIGHT: bold; COLOR: #fff; PADDING-TOP: 40px" 
+      align=right>当前用户：{$user.name} &nbsp;&nbsp; 
+      登录次数：{$user.counts} &nbsp;&nbsp; 
+      <A style="COLOR: #fff" href="/admin.php/Info/pass" target=main>修改口令</A> &nbsp;&nbsp; 
+      <A style="COLOR: #fff" href="/admin.php/Login/loginOut" target="_parent" >退出系统</A> 
+    </TD>
+    </TR>
+    </TABLE>
+</BODY>
+</HTML>

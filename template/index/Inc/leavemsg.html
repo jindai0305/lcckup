@@ -1,0 +1,116 @@
+<div id="checkMsg">	
+	<div class="msgIcon" @click="show">
+		<ul>
+			<li><a href="javascript:;">
+			<img width="64" height="64" src="__INDEX__/images/leaveMsg.png" data-bd-imgshare-binded="1">
+			</a>
+			</li>
+		</ul>
+	</div>
+	<div id="respond" class="comment-respond" v-if="leaveNow">
+		<div style="height: 25%;width: 100%"></div>
+		<div style="color: blue;text-align: center;">正在回复 "<font color="red" size="3pt" v-text="replyName"></font>"</div>
+		<h3 id="reply-title" class="comment-reply-title">
+			<i class="fa fa-pencil"></i> 快来评论 
+			<small>
+			<a rel="nofollow" id="cancel-comment-reply-link" href="javascript:;" @click="closeShow"> 取消回复 
+			</a>
+			</small>
+		</h3>
+		<form novalidate="novalidate" action="" method="post" id="commentform" class="comment-form">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-user"></span>
+							</div>
+							<input type="text" size="20" id="vname" class="form-control" placeholder="起个昵称吧" v-model="vname" required="required"> 
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-envelope"></span>
+							</div>
+							<input type="text" size="20" id="vemail" class="form-control" placeholder="请输入您的邮箱" v-model="vemail" required="required"> 
+						</div>
+					</div>
+				</div>
+			</div>
+			<textarea id="comment" class="form-control" placeholder="赶快发表你的见解吧！" name="CmtText" cols="30" rows="3" required="required">
+			</textarea>
+			<div id="loading" v-if="!(leaveMsgReady)">
+				<img src="/static/images/ico_loading.gif" data-bd-imgshare-binded="1"> 
+				<span>正在提交, 请稍候...</span>
+			</div>
+			<p class="form-submit">
+				<input name="submit" class="hiddeninput" id="submit" value="发表评论" type="button" @click="addComment">
+			</p>
+		</form>
+		<script type="text/javascript">
+			// jQuery(function () {
+			// 	jQuery('#vname').focus(function(){
+			// 		$("#submit").attr("disabled", true); 
+			// 		if (jQuery('#error1')) {jQuery('#error1').remove();}
+			// 	});
+			// 	jQuery('#vemail').focus(function(){
+			// 		if (jQuery('#error2')) {jQuery('#error2').remove();}
+			// 	});
+			// 	jQuery('#comment').focus(function(){
+			// 		if (jQuery('#error3')) {jQuery('#error3').remove();}
+			// 	});
+			// 	jQuery('#vname').blur(function(){
+			// 		$("#submit").removeAttr("disabled", true); 
+			// 		var uNa=jQuery('#vname').val();
+			// 		if (uNa=="") {return false;}
+			// 		else{
+			// 			var num=0;
+			// 			$.getJSON('/Data/ViolationWords.json', function(data){
+			// 				$.each(data, function (k, v) {
+			// 					if (uNa.indexOf(v)!=-1) {
+			// 						num=1;
+			// 						$html='<label id="error1" for="comment" class="error">该用户名含有关键词"'+v+'"</label>';
+			// 						jQuery('#vname').after($html);
+			// 						return false;
+			// 					}
+			// 				});
+			// 				if (num==0) {checkName(uNa);}
+			// 			});
+			// 		}
+			// 	});
+			// });
+        </script>
+	</div>
+</div>
+
+<!-- <script type="text/javascript">
+	var msg = new Vue({
+	    el:"#checkMsg",
+	    data:function(){
+		    return {
+		        leaveNow:false,
+		        leaveMsgReady:true,
+		        tid:"",
+		        pid:"",
+		        vname:"",
+		        vemail:"",
+		        msg:"",
+		        replyName:"aaa",
+		    }
+	    },
+		methods:{
+			show : function(){
+			   	this.leaveNow = true;
+			},
+			closeShow : function(){
+				this.leaveNow = false;
+			},
+			addComment : function(){
+				alert(321);
+			}
+		},	    
+	});
+</script> -->

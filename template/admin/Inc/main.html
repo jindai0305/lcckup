@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<META http-equiv=Content-Type content="text/html; charset=utf-8" />
+<LINK href="__ADMIN__/css/admin.css" type="text/css" rel="stylesheet" />
+<style>
+*{ margin:0; padding:0;}
+body{ background:#D9F2FE; font-family:Verdana,Arial,Helvetica,sans-serif}
+img { border:0}
+
+a{ text-decoration:none}
+a:hover{ text-decoration:underline}
+ul li{ list-style:none}
+
+.fr{ float:right!important}
+.fl{ float:left!important}
+.clr{ clear:both}
+
+.title1{ width:100%; height:36px; position:relative;}
+a.more { position:absolute; right:3px; top:12px; width:45px; height:16px; background:url(/web/images/more.jpg) no-repeat; display:block;}
+
+.userinfo{ width:100%; height:29px; line-height:29px; background:#0178B2; color:#fff; text-indent:15px; margin-bottom:17px;}
+.xinwen{ width:33%; float:left; min-height:500px; background:#EBEBE3;}
+.xinwen .title1{ background:url(__ADMIN__/web/images/xinwen_tit2.jpg) no-repeat}
+
+.tongzhi{ width:33%; float:left; margin:0 0.5%; min-height:500px; background:#EBEBE3;}
+.tongzhi .title1{ background:url(__ADMIN__/web/images/tongzhi_tit.jpg) no-repeat}
+
+.zhaopin{ width:33%; float:left; min-height:500px; background:#EBEBE3;}
+.zhaopin .title1{ background:url(__ADMIN__/web/images/zhaopin_tit.jpg) no-repeat}
+
+.infobox{ width:99.3%; margin:0 auto;}
+
+/* 新闻列表 */
+ul.news_list{ width:95%; margin:5px auto 0}
+ul.news_list li{ width:100%; height:29px; line-height:33px; overflow:hidden; font-size:12px; position:relative; text-indent:18px; border-bottom:1px dotted #7A7878; background:url(/web/images/dot.jpg) 5px 14px no-repeat }
+ul.news_list li a{ color:#4d4d4d}
+ul.news_list li a:hover{ text-decoration:underline;}
+ul.news_list li .date{ width:90px; font-size:10px; height:29px; line-height:33px; overflow:hidden; text-align:right; position:absolute; top:0; right:0; text-indent:0; color:#4d4d4d; font-family:"Arial"}
+
+</style>
+</HEAD>
+<BODY style="overflow:hidden;">
+<div style="margin:10px 5px 10px 0; background:#fff; min-height:640px; border:1px solid #C7C7C7; padding:1px;">
+	<div class='userinfo'>
+		<b>用户信息</b>&nbsp;&nbsp;登陆帐号：{$user.name}&nbsp;&nbsp;最近登陆：{$user.lasttime}&nbsp;&nbsp;登陆次数：{$user.counts}</if>
+	</div>
+	
+	<div class='infobox'>
+	</div>
+	<div class='clr'></div>
+</div>
+</BODY></HTML>

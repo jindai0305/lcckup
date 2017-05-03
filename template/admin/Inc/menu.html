@@ -1,0 +1,111 @@
+<!DOCTYPE>
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<style>
+a {
+    color: #0076B3;
+    text-decoration: none;
+}
+*{ margin:0; padding:0}
+.leftmain {
+    background: url("__ADMIN__/images/lbg.png") no-repeat #fafafa;
+    border: 1px solid #c7c7c7;
+    margin: 10px 10px 0;
+    width: 188px;
+}
+.menuleft {
+    padding-top: 20px;
+}
+.menuleft div {
+    height: 36px;
+    line-height: 36px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+}
+.menuleft a {
+    color: #0076B3;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    height: 36px;
+}
+.menuleft a.icon {
+    background: url("__ADMIN__/images/app.png") no-repeat left center;
+    padding-left: 25px;
+}
+
+.item a.hover {
+    background: url("__ADMIN__/images/apphover.png") no-repeat left center;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.chitem {
+    display: none;
+    padding-left: 60px;
+}
+
+.chitem li {
+    line-height: 36px;
+    list-style-type: square;
+}
+
+.menuleft .chitem a {
+    color: #999;
+}
+.bgcolor {
+    background: url("__ADMIN__/images/selbg.png") no-repeat;
+    color: #ffffff;
+    height: 36px;
+}
+
+.menuleft .chitem a.hover {
+    color: #000;
+}
+
+
+</style>
+</HEAD>
+<BODY style="background:#EBEBEB">
+
+<div class="leftmain">
+    <div class="menuleft">
+    {volist name="menulist" id="menuls" key="k"}
+        <div class="item"><a href="javascript:;" class="icon">{$menuls.menu_name}</a></div>
+        <ul class="chitem">
+        {volist name="menuls.seclist" id="secls"}
+		<li><a href="/admin.php/{$secls.menu_url}" target='main'>{$secls.menu_name}</a></li>
+        {/volist}
+        </ul>
+    {/volist}
+    </div>
+</div>
+<script src="__ADMIN__/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".menuleft div a").bind("click", function () {
+                var curr = $(this).parent().next(".chitem");
+                if (curr.is(":visible")) {
+                    curr.hide();
+                    $(this).parent().removeClass("bgcolor");
+                    $(this).removeClass("hover");
+                }
+                else {
+                    $(this).parent().parent().find(".chitem").hide();
+                    $(this).parent().parent().find("div").removeClass("bgcolor").find("a").removeClass("hover");
+                    $(this).parent().addClass("bgcolor");
+                    $(this).addClass("hover");
+                    curr.show();
+                }
+ 
+            });
+            $(".chitem a").bind("click", function () {
+                    $(".chitem a").removeClass("hover");
+                    $(this).addClass("hover");
+               
+            })
+        });
+    </script>
+
+</BODY>
+</HTML>

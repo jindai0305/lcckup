@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" media="screen" charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style.account-1.1.css" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/personal.record-1.0.css" media="all" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style2.css" media="all" />
+<style type="text/css"> 
+.tip-faq{
+	clear:both;
+	margin-top:0px;
+}
+#J-table-consume{
+	margin-bottom:40px;
+}
+.ui-form-tips .m-cue{
+	 background-position: -27px -506px;
+	 *background-position: -27px -505px;
+}
+#J-set-date a{
+	font-family:宋体;
+}
+</style>
+<script type="text/javascript" src="__ADMIN__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__ADMIN__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__ADMIN__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__ADMIN__/ueditor/";  //UEDITOR_HOME_URL、config、all这三个顺序不能改变
+    window.onload=function(){
+        window.UEDITOR_CONFIG.initialFrameHeight=300;//编辑器的高度
+        window.UEDITOR_CONFIG.imageUrl="{:url('admin/Category/checkPic')}";          //图片上传提交地址
+        window.UEDITOR_CONFIG.imagePath=' /uploads/pic/';//编辑器调用图片的地址
+        UE.getEditor('contents');//里面的contents是我的textarea的id值
+    }
+</script>
+</head>
+<!--[if lt IE 7]><body class="ie6"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
+<!--[if !IE]><!-->
+<body>
+<!--<![endif]-->
+<div id="container" class="ui-container">
+  <div class="ui-content fn-clear" coor="default" coor-rate="0.02">
+    <form name='save' method="post" action="/admin.php/About/aboutEdit" onsubmit="return check();" enctype="multipart/form-data">
+      <div class="ui-grid-21 ui-grid-right fn-clear" id="J-table-consume" coor="consumelist">
+      <div class="ui-tab">
+        <div class="ui-tab-trigger">
+          <ul class="fn-clear">
+            <li class="ui-tab-trigger-item ui-tab-trigger-item-current">
+            <a href="javascript:;" class="ui-tab-trigger-text">关于我</a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-tab-container" id="myScene">        
+          <div class="ui-tab-container-item ui-tab-container-item-current" style="padding:15px 0">
+          
+              <!-- 详细信息 -->
+              <table width="90%" cellspacing="1" cellpadding="0" border="0" style="margin:0 auto;" class="TableBlock">
+			  <tbody>
+			  <tr>
+			    <td width="20%" height="40" style="padding-left:50px;" class="TableContent">内容<font color="#FF0000">*</font></td>
+			    <td class="TableContent">
+			    	<textarea id="contents">{$Info.moreinfo|default=""}</textarea>
+				</td>
+			  </tr>
+			  <tr align="center" class="TableControl">
+			      <td height="35" colspan="2">
+					<input type="submit" class="BigButton" value="提交" name="Submit">
+					<input type="hidden" value="{$Info.id|default=''}" name="id" />
+					<input type="button" class="BigButton" value="返回" onclick="history.back();">
+			      </td>
+			    </tr>
+			</tbody>
+			</table>
+            <!-- 详细信息end -->
+          </div>
+        </div>
+        
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" media="screen" charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style.account-1.1.css" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/page.css" media="all" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/personal.record-1.0.css" media="all" />
+<style type="text/css"> 
+.tip-faq{
+	clear:both;
+	margin-top:0px;
+}
+#J-table-consume{
+	margin-bottom:40px;
+}
+.ui-form-tips .m-cue{
+	 background-position: -27px -506px;
+	 *background-position: -27px -505px;
+}
+#J-set-date a{
+	font-family:宋体;
+}
+</style>
+<script language="javascript" type="text/javascript" src="__ADMIN__/js/jquery.min.js"></script>
+</head>
+<!--[if lt IE 7]><body class="ie6"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
+<!--[if !IE]><!-->
+<body>
+<!--<![endif]-->
+<div id="container" class="ui-container">
+  <div id="content" class="ui-content fn-clear" coor="default" coor-rate="0.02">
+    <div class="ui-grid-21" coor="content">
+      <div class="ui-grid-21 ui-grid-right record-tit" coor="title">
+        <h2 class="ui-tit-page">博客管理</h2>
+        <div class="record-tit-amount">
+          <p>总共有<span class="number">{$ct}</span>条数据 </p>
+        </div>
+      </div>
+      <div class="ui-grid-21 ui-grid-right fn-clear" coor="total">
+        
+      </div>
+       <form method="get" action="#" name="topSearchForm" class="ui-grid-21 ui-grid-right ui-form">
+        <div class="ui-grid-21 ui-grid-right record-search">
+          <div id="J-advanced-filter-option" class="">
+            <div class="record-search-time fn-clear">
+              <div class="ui-form-item ui-form-item-time">            
+                <label class="ui-form-label" for="J-start">文章标题：</label>
+                <div class="ui-form-content">
+                  <input type="text" name="keywords" value="{$keywords}" class="ui-input search-keyword" id="J-keyword">
+                </div>
+                
+                <div class="submit-time-container ">
+                  <div class="submit-time ui-button ui-button-sorange" >
+                    <input type="submit" value=" 查 找 " />
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+    <form name="form" method="post" action="#">
+      <div class="ui-grid-21 ui-grid-right fn-clear" id="J-table-consume" coor="consumelist">
+      <div class="ui-tab">
+        <div class="ui-tab-trigger">
+          <ul class="fn-clear">
+            <li class="ui-tab-trigger-item ui-tab-trigger-item-current" >
+            <a href="###" class="ui-tab-trigger-text">图文信息</a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-tab-container" id="myScene">
+          <div class="ui-tab-container-item ui-tab-container-item-current">
+            <div class="amount-scheme-a fn-clear">
+              <table id="tradeRecordsIndex" class="ui-table">
+                <thead>
+                  <tr>
+                    <th class="title">标题</th>
+                    <th class="info">发布人</th>
+                    <th class="info">发布日期</th>
+                   	<th class="info">点赞数</th>
+					          <th class="info">浏览数</th>
+                    <th class="info">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {volist name='list' id='ls'}
+                  <tr>
+                    <th class="title">{$ls.title}</th>
+                    <th class="info">{$ls['truename']}</th>
+                    <th class="info">{$ls.pubtime|date="Y-m-d H:i",###}</th>
+	                  <th class="info">{$ls.zhan_num}&nbsp;&nbsp;<a href='javascript:;' onclick="_open({$ls.id});">查看详细</a></th>
+					          <th class="info">{$ls.liulan_num}&nbsp;&nbsp;<a href='javascript:;' onclick="_open({$ls.id});">查看详细</a></th>
+                  	<th class="info"><a href='###'>查看</a></th>
+                </tr>
+                {/volist}
+                </tbody>
+              </table>
+            </div>
+            <div class="fn-clear">
+            </div>
+            <div class="fn-clear" style="text-align: center">
+              <div class="pagination">{$page}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" value="{$type|default=1}" name="type" >
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

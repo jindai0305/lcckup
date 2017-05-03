@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>lcck | 留言板</title>   
+        <!-- Bootstrap -->
+		<link rel="icon" href="__INDEX__/images/icon.png" type="image/x-icon" />
+		<link href="__INDEX__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+        <script src="__INDEX__/bootstrap/js/jquery.min.js"></script>	
+		<script src="__INDEX__/javascript/main.min.js"></script>	
+		<script src="__INDEX__/javascript/msg.min.js"></script>	
+		<script type="text/javascript" src="__INDEX__/javascript/vue.min.js"></script>
+    	<!-- <script type="text/javascript" src="__INDEX__/javascript/vue-router.min.js"></script> -->
+    	<script type="text/javascript" src="__INDEX__/javascript/vue-resource.min.js"></script>
+        <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<script type="text/javascript">
+		$(function () {
+            jQuery('#leavemsg').addClass('active');
+            jQuery.ajaxSetup({ cache: false });
+        });
+		</script>
+		
+    </head>
+    <body class="nav-fixed">
+		<!--顶部静态导航-->
+		{include file="../template/index/Inc/top.html" /}
+		 <!--主体内容-->
+		<div id="zyn-bodyer">
+			<!-- 搜索框 单独放出来了 -->
+			{include file="../template/index/Inc/searchInc.html" /}
+			<div class="container" id="containRow">
+				<!--.container 类用于固定宽度并支持响应式布局的容器。-->
+				<div class="row">
+				 <!--主体-->
+					<div id="mainbody" class="col-md-12" style="padding-top: 10px; padding-bottom: 10px;">
+						<div id="ie-warning" class="alert alert-danger fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<span class="glyphicon glyphicon-exclamation-sign"></span> 请注意，lcckBlog并不支持低于IE8的浏览器，为了获得最佳效果，推荐使用FireFox浏览器。
+						</div>
+						
+						<article class="article container well" style="text-align:center;">
+							<header class="pageheader clearfix">
+								<h1 class="">
+									<a href="/Index/msg">留言板</a>
+								</h1>
+							</header>
+							<div id="leavemsg" class="article-content">
+								<p style="margin-bottom:0px;">
+									<img class="article-emot inline" src="/static/images/watermelon.png" style="display: inline;">
+								</p>
+								<p style="margin-bottom:0px;">嗯，留言板就先做成这样吧，如果你有好的建议和想法可以给我留言。</p>
+								<p style="margin-bottom:0px;">(本站无需注册,起个昵称,输入正确邮箱即可留言/评论)</p>
+							</div>
+						</article>
+						<div id="comments-template">
+							<div class="comments-wrap">
+								<div id="comments" data-url="">
+									<h3 id="comments-title" class="comments-header alert alert-info">
+										<font v-text="num"></font>条留言&nbsp; &nbsp;  <a style="color:red" href="/Index/msg#submit">快速留言&gt;&gt;&gt;</a>
+									</h3>
+									<ol class="commentlist">
+									<template v-for="item in msgDataList">
+										<li :id="item.liId" class="comment even thread-even depth-1 parent">
+										<article :id="item.divId" class="comment-body">
+											<footer class="comment-meta">
+												<div class="comment-author vcard">
+													<img :src="item.imgurl" class="avatar avatar-70 photo" height="60" width="60">
+													<b class="fn"><a href rel="external nofollow" class="floor" v-text="item.uname"></a></b>
+													<a style="color:rgba(0, 39, 59, 0.35);" href="javascript:;">	<time :datatime="item.time" v-text="item.time"></time>
+													</a>
+												</div>
+												<div v-if="item.iskey" class="comment-metadata" style="color:#D2322D" v-text="item.key"></div>
+											</footer>
+											<div class="comment-content">
+												<p  v-text="item.content"></p>
+											</div>
+											<div class="reply">
+											<a class="comment-reply-link" href="javascript:void(0)" @click="item.click">回复</a>
+											</div>
+										</article>
+										<recursive-object :item="item.laterData"></recursive-object>
+									</template>
+									</li>
+									</ol>
+									<div id="loading-comments" v-html="msg" style="display: block;">
+										<img v-if="!(msgReady)" src="/static/images/ico_loading.gif">
+									</div>
+								</div>
+								{include file="../template/index/Inc/leavemsg.html" /}
+								<input id="SessionName" type="hidden" value="">
+								<input id="SessionEmail" type="hidden" value="">
+								<div id="addComm"></div>
+								<!-- #respond -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--页脚版权声明-->
+		{include file="../template/index/Inc/footer.html" /}
+        <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+        <script src="__INDEX__/bootstrap/js/bootstrap.min.js"></script> 
+        <script type="text/javascript">
+			var pageData={
+				url: "/msg/getIndexPage",
+				i: 1,
+				ready: true,
+				over: false
+			}
+			var recursiveObject = Vue.extend({
+	            		name:'recursive-object',
+	            		template:[
+	            		'<ol class="children">',
+	            		'<template v-for="cel in item">',
+	            		'<li :id="cel.liId" class="comment even thread-even depth-1 parent">',
+	            		'<article :id="cel.divId" class="comment-body">',
+	            		'<footer class="comment-meta">',
+	            		'<div class="comment-author vcard">',
+	            		'<img :src="cel.imgurl" class="avatar avatar-70 photo" height="60" width="60">',
+	            		'<b class="fn"><a href rel="external nofollow" class="floor" v-text="cel.uname"></a></b>',
+	            		'<a style="color:rgba(0, 39, 59, 0.35);" href="javascript:;">',
+	            		'<time :datatime="cel.time" v-text="cel.time"></time>',
+	            		'</a></div>',
+	            		'<div v-if="cel.iskey" class="comment-metadata" style="color:#D2322D" v-text="cel.key"></div>',
+	            		'</footer>',
+	            		'<div class="comment-content">',
+	            		'<p  v-text="cel.content"></p>',
+	            		'</div>',
+	            		'<div class="reply">',
+	            		'<a class="comment-reply-link" href="javascript:void(0)" @click="cel.click">回复</a>',
+	            		'</div></article>',
+	            		'<recursive-object :item="cel.laterData" v-if="cel.isData"></recursive-object>',
+	            		'</li>',
+	            		'</ol>'
+	            		].join(''),
+	            		props: ['item'],
+	        })
+			Vue.component('recursiveObject',recursiveObject)
+	        var vm = new Vue({
+	            el:"#containRow",
+	            data:function(){
+	                return {
+	                    name:"msg",
+	                    msgReady:false,
+	                    pageReady:true,
+	                    isSearch:false,
+	                    leaveNow:false,
+			    vname:"",
+	                    vemail:"",
+		            leaveMsgReady:true,
+	                    replyName:"aaa",
+	                    msg:"",
+	                    num:"",
+	                    pagesize:"",
+	                    msgDataList:[],
+	                }
+	            },
+	            created:function(){
+					this.$http({
+						url:pageData.url+'/page/'+pageData.i,
+						method:"get",
+		                emulateJSON:true
+					}).then(function(response){
+						console.log(response);
+						var msgObj = response.body.msgData;
+						if (msgObj) {this.msgDataList = msgObj;}
+						this.num = response.body.num;
+						this.msgReady = true;
+						this.pagesize = response.body.pagesize;
+					},function(response){
+						console.log("error");
+					});
+				},
+		methods:{
+					show : function(){
+					   	this.leaveNow = true;
+					},
+					closeShow : function(){
+						this.leaveNow = false;
+					},
+					addComment : function(){
+						alert(321);
+					}
+				},
+	        });
+	        //获取滚动条当前的位置 
+			function getScrollTop() { 
+			    var scrollTop=0; 
+			    if(document.documentElement && document.documentElement.scrollTop){ 
+			        scrollTop=document.documentElement.scrollTop; 
+			    }else if(document.body) { 
+			        scrollTop=document.body.scrollTop; 
+			    } 
+			    return scrollTop; 
+			} 
+			//获取当前可视范围的高度 
+			function getClientHeight() { 
+			    var clientHeight=0; 
+			    if(document.body.clientHeight && document.documentElement.clientHeight){ 
+			        clientHeight=Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
+			    }else{ 
+			        clientHeight=Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
+			    } 
+			    return clientHeight; 
+			} 
+			//获取文档完整的高度 
+			function getScrollHeight() { 
+			    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
+			} 
+			// 监听滚动事件
+			window.onscroll=function () {
+			    if (pageData.over) {
+			        return false;
+			    }else{
+				    if ( getScrollHeight()-(getScrollTop()+getClientHeight())<=50 ) {
+				    	//设置数据获取状态 防止进行多次请求
+				        if (!dealGetPage()) {
+				        	return false;
+				        }
+				        vm.pageReady = false;
+				        // 获取下一页的数据
+				        vm.$http.get(pageData.url+'/page/'+pageData.i).then(function(response){
+				            vm.pageReady = true;
+				            pageData.ready = true;
+				            if(response.data.msgData.length < vm.pagesize){
+				                pageData.over=true;
+				                vm.msg = "<span style='font-size:16px'>已经没有新留言啦,看了这么久，留个纪念吧~</span>";
+				            }else{
+				            	var msgData = response.data.msgData;
+				            	for (var i = 0; i <= msgData.length - 1; i++) {
+				            		vm.msgDataList.push(msgData[i]);
+				            	}
+				            }
+				        })
+				    }
+			    } 
+			}
+
+			function dealGetPage(){
+				if (pageData.ready) {
+					pageData.i++;
+					pageData.ready = false;
+					return true;
+				}else{
+					return false;
+				}
+
+			} 
+        </script>
+    </body>
+</html> 

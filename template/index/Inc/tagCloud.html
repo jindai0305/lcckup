@@ -1,0 +1,14 @@
+						<aside id="doc_category">
+							<div class="panel panel-zyn hidden-xs">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-tags newicon"></span> 标签云
+								</div>
+								<div class="d_tags">
+									<template v-for="item in cateDataList">
+										<a :href="item.cateurl" v-text="item.cateName">
+											<span style="float:right" v-text="item.num">()</span>
+										</a>
+									</template>
+								</div>
+							</div>
+						</aside>

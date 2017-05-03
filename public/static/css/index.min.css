@@ -1,0 +1,36 @@
+.msgIcon {
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+	z-index: 999;
+	display: none
+}
+
+.msgIcon ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 50px
+}
+
+.msgIcon li {
+	position: relative;
+	margin-top: 5px;
+	text-align: center;
+	opacity: .4;
+	filter: alpha(opacity=40)
+}
+
+.msgIcon a {
+	position: relative;
+	z-index: 2;
+	display: block;
+	height: 50px;
+	border-radius: 2px;
+	background-color: #666;
+	color: #666
+}
+
+.msgIcon a:hover {
+	color: #fff
+}

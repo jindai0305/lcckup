@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lcckBlog|{$Info.title}</title>
+<!-- Bootstrap -->
+		<link rel="icon" href="__INDEX__/images/icon.png" type="image/x-icon" />
+		<link href="__INDEX__/bootstrap/css/ownboot.css" rel="stylesheet">
+		<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+        <script src="__INDEX__/bootstrap/js/jquery.min.js"></script>	
+		<script src="__INDEX__/javascript/main.min.js"></script>
+		<script src="__INDEX__/javascript/artlist.js"></script>
+		<script type="text/javascript" src="__INDEX__/javascript/vue.min.js"></script>
+    	<script type="text/javascript" src="__INDEX__/javascript/vue-resource.min.js"></script>
+		<script type="text/javascript">
+        jQuery(function () {
+           jQuery('#home').addClass('active');
+           jQuery('#wxlook').attr('src','/static/images/weixin.png');
+           jQuery('.author-avatar img').each(function () {
+                 var url = jQuery(this).attr('data-url');
+                 jQuery(this).attr('src', url);
+            });
+            jQuery.ajaxSetup({ cache: false });
+            var pageindex = {$pageindex};
+            var pagesize = {$pagesize};
+            //从邮件链接过来的会用到下面三个参数
+            var rootCmtId = {$rootCmdId};
+            var newCmtId = {$newId};
+            var cmtId = {$CmdId};
+            var flag = {$flag};            //判断是否是从邮件链接过来
+            GenerateComments("/pageIndex/" + pageindex + "/pageSize/" + pagesize, flag, rootCmtId,newCmtId, cmtId);
+			jQuery(".pay_item").click(function () {
+              jQuery(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+              var dataid = jQuery(this).attr('data-id');
+			  jQuery(".shang_payimg img").attr("src", "/static/qrcode/" + dataid + "img.jpg");
+              jQuery("#shang_pay_txt").text(dataid == "alipay" ? "支付宝" : "微信");
+           });
+        });
+</script>
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<!--[if lt IE 9]>
+          <script src="/Content/js/ie/modernizr-2.6.2.js></script>
+          <script src="/Content/js/ie/respond.min.js></script>
+          <script src="/Content/js/ie/html5shiv.js></script>
+<![endif]-->
+</head>
+
+<body class="nav-fixed" style="zoom: 1;">
+	<!--顶部静态导航-->
+	{include file="../template/indexweb/Inc/top.html" /}
+	<!--主体内容-->
+	<div id="zyn-bodyer">
+	<!-- 搜索框 单独放出来了 -->
+		{include file="../template/indexweb/Inc/searchInc.html" /}
+		<div class="container" id="containRow">
+			<div class="row">
+				<!--主体-->
+				<div id="mainbody" class="col-md-8">
+					<div id="ie-warning" class="alert alert-danger fade in">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+						请注意，lcck|Blog并不支持低于IE8的浏览器，为了获得最佳效果，推荐使用Chrome浏览器。
+					</div>
+					<article class="article container well" v-if="Info.code">
+						<div class="breadcrumb breadset">
+							<span class="glyphicon glyphicon-home"></span> 
+							<a title="Go to Home" href="/" class=" home">Myblog</a>
+							/ <a :title="Info.cateName" href="{$Info.cateUrl}">{$Info.cateName}</a> /
+						</div>
+						<header class="article-header">
+							<h1 class="article-title">
+								<a href="javascript:void(0)">{$Info.title}</a>
+							</h1>
+							<div class="article-keyword">
+								关键词：
+								{foreach name="Info.keywords" item="keywords" }
+									<span class="item">{$keywords}</span> 
+								{/foreach}
+							</div>
+						</header>
+						<article class="article-content">
+							<hr style="margin: 0px 0px 15px 0px">
+							<input id="tId" type="hidden" value="{$Info.id}" />
+							<p>{$Info.moreinfo}</p>
+						</article>
+						<div class="article-meta">
+							<span class="item"><i>posted@</i>{$Info.pubtime}</span>
+							<span class="item">浏览（<a href="{$Info.url}">{$Info.liulan_num}</a>）
+							</span> 
+							<span class="item commentcount">评论（<a href="#comments-title">{$Info.pinlunNum}</a>）
+							</span> 
+							<span class="praisebtn">
+								<img class="praisenum" src="/static/images/ico_praise.png" data-bd-imgshare-binded="1">
+								（<a data-id="{$Info.id}" praise-flag="0" href="javascript:;">{$Info.zhan_num}</a>）
+							</span>
+						</div>
+						<div class="article-pager bs-example">
+							<ul class="pager">
+								<li class="next" v-if="Info.next">
+									<a rel="next" class="gotoArchive" href="{$Info.nexturl}">下一篇</a>
+								</li>
+							</ul>
+						</div>
+						<!-- 文章版权信息 -->
+						<div class="copyright alert alert-success post-copyright">
+							<p>作者：lcckBlog</p>
+							<p>
+								原文地址：&nbsp;<a href="{$Info.url}">{$Info.url}</a>
+							</p>
+							<p>
+								版权归属：&nbsp;
+								<a href="{$Info.url}">lcckBlog&nbsp; </a> 转载时请以链接形式注明出处
+							</p>
+						</div>
+						<!-- 文章分享 -->
+						<div class="clearfix" id="bdshare">
+							<div class="bdsharebuttonbox  bdshare-button-style0-16" data-tag="share_1" data-bd-bind="1484726039890">
+								<a class="bds_qzone" data-cmd="qzone" :href="Info.url" title="分享到QQ空间"></a>
+								<a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+								<a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+								<a class="bds_baidu" data-cmd="baidu"></a>
+								<a class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+								<a class="bds_ty" data-cmd="ty" title="分享到天涯社区"></a>
+								<a class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a>
+								<a class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a> 
+								<a class="bds_twi" data-cmd="twi" title="分享到Twitter"></a> 
+								<a class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+								<a class="bds_more" data-cmd="more">更多</a> 
+								<a class="bds_count" data-cmd="count" title="累计分享71次">71</a>
+							</div>
+						</div>
+						<script>
+								window._bd_share_config = {
+									common: {
+										bdText: '{$Info.showMsg}',
+										bdDesc: '',
+										bdUrl: '{$Info.url}',
+										bdSign: 'on', //是否进行回流统计。
+										bdMini: '2', //下拉浮层中分享按钮的列数
+										bdMiniList: false  //自定义下拉浮层中的分享按钮类型和排列顺序
+									},
+									share: [{
+										//此处放置分享按钮设置
+										"bdSize": 20
+									}],
+									slide: [{
+										bdImg: 0,
+										bdPos: "right",
+										bdTop: 100
+									}],
+									image: [{
+										//此处放置图片分享设置
+										viewType: 'list',
+										viewPos: 'top',
+										viewColor: 'black',
+										viewSize: '16',
+										viewList: ['qzone', 'tsina', 'weixin', 'tqq', 'douban']
+									}],
+									selectShare: [{
+										//此处放置划词分享设置
+										"bdselectMiniList": ['qzone', 'tqq', 'weixin', 'bdxc', 'tqf', 'tsina', 'douban']
+									}]
+								}
+								with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5)];
+							</script>
+						<!-- 文章分享结束 -->
+					</article>
+					<!--打赏-->
+					<div style="margin-bottom: 20px;">
+						<a title="打赏，支持一下" class="dashang" onclick="dashangToggle()"
+							href="javascript:void(0)"> </a>
+					</div>
+					<!-- 相关文章 -->
+					<div class="bs-example visible-md visible-lg" id="post-related">
+						<div class="row">
+							<div class="alert alert-danger  related-title text-center">
+								<i class="fa fa-heart"></i> 智能推荐:
+							</div>
+
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="comments-template">
+						<div class="comments-wrap">
+							<div id="comments">
+								<h3 id="comments-title" class="comments-header alert alert-info">
+									{$Info.msgNum}条评论
+								</h3>
+								<div id="loading-comments">
+									<img src="__INDEX__/images/ico_loading.gif">
+								</div>
+							</div>
+							<!-- #respond -->
+							<input id="SessionName" type="hidden" value="">
+							<input id="SessionEmail" type="hidden" value="">
+							<div id="addComm"></div>
+						</div>
+					</div>
+					<!-- 打赏 -->
+					{include file="../template/indexweb/Inc/payShow.html" /}
+
+				</div>
+
+				<!--右侧边栏-->
+				<aside class="col-md-4" id="sidebar">
+					<!-- 关于我 -->
+					{include file="../template/indexweb/Inc/followMe.html" /}
+					<!-- 标签云 -->
+					{include file="../template/indexweb/Inc/tagCloud.html" /}
+					<!-- 站长推荐 -->
+					{include file="../template/indexweb/Inc/hot.html" /}
+					<!-- 雁过留声 -->
+					{include file="../template/indexweb/Inc/goose.html" /}
+					<!-- 友情链接 -->
+					{include file="../template/indexweb/Inc/links.html" /}
+				</aside>
+			</div>
+		</div>
+	</div>
+	<!--页脚版权声明-->
+	{include file="../template/indexweb/Inc/footer.html" /}
+    <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+    <script src="__INDEX__/bootstrap/js/bootstrap.min.js"></script> 
+</body>
+</html>

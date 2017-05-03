@@ -1,0 +1,29 @@
+			<div class="search">
+				<form id="searchform" class="navbar-form navbar-right" role="search">
+					<div class="form-group">
+						<input type="text" id="searchWords" name="kw" class="form-control" data-provide="typeahead" autocomplete="off" placeholder="请输入要搜索关键词"  v-model="kw">
+						<button type="button" class="btn"  id="searchbtn" @click="search">
+						搜索
+						</button>
+					</div>
+				</form>
+				<script type="text/javascript">
+				var searchV = new Vue({
+					el:".search",
+					data:function(){
+	                return {
+	                	kw:"",
+	                }
+	            	},
+					methods:{
+			        search : function(){
+			            if(this.isSearch){
+			            	window.location('/search.html?kw='+this.kw);
+			            }else{
+			            	window.open('/search.html?kw='+this.kw);
+			            }
+			        }
+			    	},
+				})
+				</script>
+			</div>

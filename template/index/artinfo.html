@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lcckBlog|</title>
+<!-- Bootstrap -->
+		<link rel="icon" href="__INDEX__/images/icon.png" type="image/x-icon" />
+		<link href="__INDEX__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+        <script src="__INDEX__/bootstrap/js/jquery.min.js"></script>	
+		<script src="__INDEX__/javascript/main.min.js"></script>
+		<script src="__INDEX__/javascript/artlist.js"></script>
+		<script type="text/javascript" src="__INDEX__/javascript/vue.min.js"></script>
+    	<!-- <script type="text/javascript" src="__INDEX__/javascript/vue-router.min.js"></script> -->
+    	<script type="text/javascript" src="__INDEX__/javascript/vue-resource.min.js"></script>
+		<script type="text/javascript">
+        jQuery(function () {
+           jQuery('#home').addClass('active');
+			//打赏
+			jQuery(".pay_item").click(function () {
+              jQuery(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+              var dataid = jQuery(this).attr('data-id');
+			  jQuery(".shang_payimg img").attr("src", "/static/qrcode/" + dataid + "img.jpg");
+              jQuery("#shang_pay_txt").text(dataid == "alipay" ? "支付宝" : "微信");
+           });
+        });
+</script>
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<!--[if lt IE 9]>
+          <script src="/Content/js/ie/modernizr-2.6.2.js></script>
+          <script src="/Content/js/ie/respond.min.js></script>
+          <script src="/Content/js/ie/html5shiv.js></script>
+<![endif]-->
+</head>
+
+<body class="nav-fixed" style="zoom: 1;">
+	<!--顶部静态导航-->
+	{include file="../template/index/Inc/top.html" /}
+	<!--主体内容-->
+	<div id="zyn-bodyer">
+	<!-- 搜索框 单独放出来了 -->
+		{include file="../template/index/Inc/searchInc.html" /}
+		<div class="container" id="containRow">
+			<!--.container 类用于固定宽度并支持响应式布局的容器。-->
+			<div class="row">
+				<!--row必须包含在.container（固定宽度）或 .container-fluid （100% 宽度）中,通过row在水平方向创建一组column12个-->
+				<!--主体-->
+				<div id="mainbody" class="col-md-8">
+					<div id="ie-warning" class="alert alert-danger fade in">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+						请注意，lcck|Blog并不支持低于IE8的浏览器，为了获得最佳效果，推荐使用Chrome浏览器。
+					</div>
+					<div id="loading" v-if="!(InfoReady && commentReady)" style="text-align:center;">
+						<img width="32" height="32" src="__INDEX__/images/ico_loading.gif" />
+					</div>
+					<!-- 内容主体 包含三部分内容：1.每日提示、2.文章列表、3. 分页条-->
+					<article class="article container well" v-if="Info.code">
+						<div class="breadcrumb breadset">
+							<!-- 面包屑 -->
+							<span class="glyphicon glyphicon-home"></span> 
+							<a title="Go to Home" href="/" class=" home">Myblog</a>
+							/ <a :title="Info.cateName" :href="Info.cateUrl" v-text="Info.cateName"></a> /
+						</div>
+						<header class="article-header">
+							<h1 class="article-title">
+								<a href="javascript:void(0)" v-text="Info.title"></a>
+							</h1>
+							<!--//文章关键词 上面放关键词,文章最下面放阅读、评论、点赞 -->
+							<div class="article-keyword">
+								关键词：
+								<template v-for="keywords in Info.keywords">
+									<span class="item" v-text="keywords"></span> 
+								</template>
+							</div>
+						</header>
+						<article class="article-content">
+							<hr style="margin: 0px 0px 15px 0px">
+							<input id="tId" type="hidden" :value="Info.id" />
+							<p v-html="Info.moreinfo"></p>
+						</article>
+						<div class="article-meta">
+							<span class="item"><i>posted@</i><font v-text="Info.pubTime"></font></span>
+							<span class="item">浏览（<a :href="Info.url" v-text="Info.liulan_num"></a>）
+							</span> 
+							<span class="item commentcount">评论（<a href="#comments-title" v-text="Info.pinlunNum"></a>）
+							</span> 
+							<span class="praisebtn">
+								<img class="praisenum" src="/static/images/ico_praise.png" data-bd-imgshare-binded="1">
+								（<a data-id="1" praise-flag="0" href="javascript:;" v-text="Info.zhan_num"></a>）
+							</span>
+						</div>
+						<div class="article-pager bs-example">
+							<ul class="pager">
+								<li class="next" v-if="Info.next">
+									<a rel="next" class="gotoArchive" :href="Info.nexturl">下一篇</a>
+								</li>
+							</ul>
+						</div>
+
+						<!-- 文章版权信息 -->
+						<div class="copyright alert alert-success post-copyright">
+							<p>作者：lcckBlog</p>
+							<p>
+								原文地址：&nbsp;<a :href="Info.url" v-text="Info.url"></a>
+							</p>
+							<p>
+								版权归属：&nbsp;
+								<a :href="Info.url">lcckBlog&nbsp; </a> 转载时请以链接形式注明出处
+							</p>
+						</div>
+
+						<!-- 文章分享 -->
+						<div class="clearfix" id="bdshare">
+							<div class="bdsharebuttonbox  bdshare-button-style0-16" data-tag="share_1" data-bd-bind="1484726039890">
+								<a class="bds_qzone" data-cmd="qzone" :href="Info.url" title="分享到QQ空间"></a>
+								<a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+								<a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+								<a class="bds_baidu" data-cmd="baidu"></a>
+								<a class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+								<a class="bds_ty" data-cmd="ty" title="分享到天涯社区"></a>
+								<a class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a>
+								<a class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a> 
+								<a class="bds_twi" data-cmd="twi" title="分享到Twitter"></a> 
+								<a class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+								<a class="bds_more" data-cmd="more">更多</a> 
+								<a class="bds_count" data-cmd="count" title="累计分享71次">71</a>
+							</div>
+						</div>
+						<script>
+								window._bd_share_config = {
+									common: {
+										bdText: 'Info.showMsg',
+										bdDesc: '',
+										bdUrl: 'Info.url',
+										bdSign: 'on', //是否进行回流统计。
+										bdMini: '2', //下拉浮层中分享按钮的列数
+										bdMiniList: false  //自定义下拉浮层中的分享按钮类型和排列顺序
+									},
+									share: [{
+										//此处放置分享按钮设置
+										"bdSize": 20
+									}],
+									slide: [{
+										bdImg: 0,
+										bdPos: "right",
+										bdTop: 100
+									}],
+									image: [{
+										//此处放置图片分享设置
+										viewType: 'list',
+										viewPos: 'top',
+										viewColor: 'black',
+										viewSize: '16',
+										viewList: ['qzone', 'tsina', 'weixin', 'tqq', 'douban']
+									}],
+									selectShare: [{
+										//此处放置划词分享设置
+										"bdselectMiniList": ['qzone', 'tqq', 'weixin', 'bdxc', 'tqf', 'tsina', 'douban']
+									}]
+								}
+								with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5)];
+							</script>
+						<!-- 文章分享结束 -->
+						<!-- Baidu Button END -->
+					</article>
+					<!--打赏-->
+					<div style="margin-bottom: 20px;">
+						<a title="打赏，支持一下" class="dashang" onclick="dashangToggle()"
+							href="javascript:void(0)"> </a>
+					</div>
+					<!-- 相关文章 -->
+					<div class="bs-example visible-md visible-lg" id="post-related">
+						<div class="row">
+							<div class="alert alert-danger  related-title text-center">
+								<i class="fa fa-heart"></i> 智能推荐:
+							</div>
+
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="thumbnail">
+									<div class="caption clearfix">
+										<p class="post-related-title">
+											<a href="javascript:;" rel="bookmark" title=""> 相似文章 </a>
+										</p>
+										<p class="post-related-content">系统推荐...<br>how to do...<br>占位...
+										</p>
+										<p>
+											<a class="btn btn-danger pull-right read-more" href="javascript:;" title="详细阅读！">阅读全文 </a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="comments-template">
+						<div class="comments-wrap">
+							<div id="comments">
+								<h3 id="comments-title" class="comments-header alert alert-info">
+								<font v-text="Info['msgNum']"></font>条评论</h3>
+								<div id="loading-comments" v-if="!(pageReady)">
+									<img src="__INDEX__/images/ico_loading.gif">
+								</div>
+								<ol class="commentlist">
+									<template v-for="item in commentDataList">
+									<li :id="item.liId" class="comment even thread-even depth-1 parent">
+									<article :id="item.divId" class="comment-body">
+									<footer class="comment-meta">
+									<div class="comment-author vcard">
+									<img :src="item.imgurl" class="avatar avatar-70 photo" height="60" width="60">
+									<b class="fn"><a href rel="external nofollow" class="floor" v-text="item.uname"></a></b>
+									<span class="says">say:</span>
+									</div>
+									<div class="comment-metadata">
+									<a href><time :datatime="item.time" v-text="item.time"></time>
+									<font color="#D2322D" v-if="item.iskey" v-text="item.key"></font>
+									</a>
+									</div>
+									</footer>
+									<div class="comment-content">
+									<p v-text="item.content"></p>
+									</div>
+									<div class="reply">
+									<a class="comment-reply-link" href="javascript:void(0)" onclick="addComment(0，this)">回复</a>
+									</div>
+									</article>
+									<recursive-object :item="item.laterData"></recursive-object>
+									</li>
+									</template>
+								</ol>
+								<div class="pagination" v-text="msg">
+								</div>
+							</div>
+							{include file="../template/index/Inc/leavemsg.html" /}
+							<!-- #respond -->
+							<input id="SessionName" type="hidden" value="">
+							<input id="SessionEmail" type="hidden" value="">
+							<div id="addComm"></div>
+						</div>
+					</div>
+
+					<div class="content">
+						<div class="hide_box">
+							<!--遮罩-->
+						</div>
+						<!--打赏-->
+						<div class="shang_box">
+							<a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"> 
+							<img src="/static/images/close.jpg" alt="取消" data-bd-imgshare-binded="1">
+							</a>
+							<div class="shang_tit">
+								<p>感谢您的支持，我会继续努力的!</p>
+							</div>
+							<div class="shang_payimg">
+								<img src="/static/qrcode/alipayimg.jpg" alt="扫码支持" title="扫一扫" data-bd-imgshare-binded="1">
+							</div>
+							<div class="pay_explain">扫码打赏，你说多少就多少</div>
+							<div class="shang_payselect">
+								<div class="pay_item checked" data-id="alipay">
+									<span class="radiobox"></span> <span class="pay_logo"> 
+									<img src="/static/qrcode/alipay.jpg" alt="支付宝" data-bd-imgshare-binded="1">
+									</span>
+								</div>
+								<div class="pay_item" data-id="weixinpay">
+									<span class="radiobox"></span> <span class="pay_logo"> 
+									<img src="/static/qrcode/wechat.jpg" alt="微信" data-bd-imgshare-binded="1">
+									</span>
+								</div>
+							</div>
+							<div class="shang_info">
+								<p>
+									打开<span id="shang_pay_txt"></span>扫一扫，即可进行扫码打赏哦
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--右侧边栏-->
+				<aside class="col-md-4" id="sidebar">
+					<!-- 关于我 -->
+					{include file="../template/index/Inc/followMe.html" /}
+					<!-- 标签云 -->
+					{include file="../template/index/Inc/tagCloud.html" /}
+					<!-- 站长推荐 -->
+					{include file="../template/index/Inc/hot.html" /}
+					<!-- 雁过留声 -->
+					{include file="../template/index/Inc/goose.html" /}
+					<!-- 友情链接 -->
+					{include file="../template/index/Inc/links.html" /}
+				</aside>
+			</div>
+		</div>
+	</div>
+	<!--页脚版权声明-->
+	{include file="../template/index/Inc/footer.html" /}
+    <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+    <script src="__INDEX__/bootstrap/js/bootstrap.min.js"></script> 
+    <script type="text/javascript">
+			var pageData={
+				url: "/Info/getIndexPage",
+				i: 1,
+				id: {$id},
+				ready: true,
+				over: false
+			}
+			var recursiveObject = Vue.extend({
+	            		name:'recursive-object',
+	            		template:[
+	            		'<ol class="children">',
+	            		'<template v-for="cel in item">',
+	            		'<li :id="cel.liId" class="comment even thread-even depth-1 parent">',
+	            		'<article :id="cel.divId" class="comment-body">',
+	            		'<footer class="comment-meta">',
+	            		'<div class="comment-author vcard">',
+	            		'<img :src="cel.imgurl" class="avatar avatar-70 photo" height="60" width="60">',
+	            		'<b class="fn"><a href rel="external nofollow" class="floor" v-text="cel.uname"></a></b>',
+	            		'<a style="color:rgba(0, 39, 59, 0.35);" href="javascript:;">',
+	            		'<time :datatime="cel.time" v-text="cel.time"></time>',
+	            		'</a></div>',
+	            		'<div v-if="cel.iskey" class="comment-metadata" style="color:#D2322D" v-text="cel.key"></div>',
+	            		'</footer>',
+	            		'<div class="comment-content">',
+	            		'<p  v-text="cel.content"></p>',
+	            		'</div>',
+	            		'<div class="reply">',
+	            		'<a class="comment-reply-link" href="javascript:void(0)" onclick="addComment(1,this)">回复</a>',
+	            		'</div></article>',
+	            		'<recursive-object :item="cel.laterData" v-if="cel.isData"></recursive-object>',
+	            		'</li>',
+	            		'</ol>'
+	            		].join(''),
+	            		props: ['item'],
+	        })
+			Vue.component('recursiveObject',recursiveObject);
+			Vue.directive('title', {
+			  inserted: function(el, binding) {
+			    document.title = el.innerText
+			    el.remove()
+			  }
+			});
+	        var vm = new Vue({
+	            el:"#containRow",
+	            data:function(){
+	                return {
+	                    commentReady:false,
+	                    InfoReady:false,
+	                    pageReady:true,
+	                    leaveMsgReady:true,
+	                    isSearch:false,
+	                    leaveNow:false,
+				        tid:"",
+				        pid:"",
+				        vname:"",
+				        vemail:"",
+				        msg:"",
+				        replyName:"aaa",
+	                    Info:['code',false],
+	                    commentDataList:[],
+	                    cateDataList:[],
+	                    deilDataList:[],
+	                    yglsDataList:[]
+	                }
+	            },
+	            methods:{
+					show : function(){
+					   	this.leaveNow = true;
+					},
+					closeShow : function(){
+						this.leaveNow = false;
+					},
+					addComment : function(){
+						alert(321);
+					}
+				},
+	            created:function(){
+					this.$http({
+						url:pageData.url+'/id/'+pageData.id+'/page/'+pageData.i,
+						method:"get",
+		                emulateJSON:true
+					}).then(function(response){
+						if (pageData.i == 1) {
+							var InfoObj = response.body.artInfo;
+							var cateObj = response.body.cateData;
+							var deilObj = response.body.deilData;
+							var yglsObj = response.body.yglsData;
+							if (InfoObj) {this.Info = InfoObj;}
+							if (cateObj) {this.cateDataList = cateObj;}
+							if (deilObj) {this.deilDataList = deilObj;}
+							if (yglsObj) {this.yglsDataList = yglsObj;}
+						}
+						console.log(response);
+						var commentObj = response.body.commentData;
+						if (commentObj) {this.commentDataList = commentObj;}
+						this.InfoReady=true;
+						this.commentReady=true;
+					},function(response){
+						console.log("error");
+					});
+				},
+	        })
+	        //获取滚动条当前的位置 
+			function getScrollTop() { 
+			    var scrollTop=0; 
+			    if(document.documentElement && document.documentElement.scrollTop){ 
+			        scrollTop=document.documentElement.scrollTop; 
+			    }else if(document.body) { 
+			        scrollTop=document.body.scrollTop; 
+			    } 
+			    return scrollTop; 
+			} 
+			//获取当前可视范围的高度 
+			function getClientHeight() { 
+			    var clientHeight=0; 
+			    if(document.body.clientHeight && document.documentElement.clientHeight){ 
+			        clientHeight=Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
+			    }else{ 
+			        clientHeight=Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
+			    } 
+			    return clientHeight; 
+			} 
+			//获取文档完整的高度 
+			function getScrollHeight() { 
+			    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
+			} 
+			// 监听滚动事件
+			window.onscroll=function () {
+			    if (pageData.over) {
+			        return false;
+			    }else{
+				    if ( getScrollHeight()-(getScrollTop()+getClientHeight())<=50 ) {
+				    	//设置数据获取状态 防止进行多次请求
+				        if (!dealGetPage()) {
+				        	return false;
+				        }
+				        vm.pageReady = false;
+				        // 获取下一页的数据
+				        vm.$http.get(pageData.url+'/id/'+pageData.id+'/page/'+pageData.i).then(function(response){
+				            vm.pageReady = true;
+				            pageData.ready = true;
+				            if(response.data.commentData.length==0){
+				                pageData.over=true;
+				                vm.msg = "已经没有最新评论啦~";
+				            }else{
+				            	var commentData = response.data.commentData;
+				            	for (var i = 0; i <= commentData.length - 1; i++) {
+				            		vm.commentDataList.push(commentData[i]);
+				            	}
+				            }
+				        })
+				    }
+			    } 
+			}
+			function dealGetPage(){
+				if (pageData.ready) {
+					pageData.i++;
+					pageData.ready = false;
+					return true;
+				}else{
+					return false;
+				}
+
+			} 
+			function addComment(fid,obj){
+				var tid = document.getElementById('tId').value;
+				vm.tid = tid;
+				console.log(obj);
+				console.log(vm);
+			}
+        </script>
+
+
+
+</body>
+</html>

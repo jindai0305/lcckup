@@ -1,0 +1,60 @@
+	<!--页脚版权声明-->
+	<footer id="zyn-footer">
+		<div class="container">
+			Copyright © 2017 <a href="javascript:;">lcckblog</a>&nbsp;
+			| &nbsp;联系我 : <a href="mailto:cc520820lk@163.com">lcck0305@163.com</a>&nbsp;
+			| &nbsp;All Rights Reserved.&nbsp; | &nbsp;浙ICP备xxxxxxxxx号-1
+		</div>
+	</footer>
+
+	<!--回到顶部-->
+	<div class="rollbar">
+		<ul>
+			<li><a href="javascript:;">
+			<img width="64" height="64" src="__INDEX__/images/ico-rocket.png" data-bd-imgshare-binded="1">
+			</a></li>
+		</ul>
+	<script type="text/javascript">
+		jQuery('.rollbar').click(function(){
+			$("html, body").animate({ scrollTop: 0 }, 120);
+		});
+
+		jQuery(function () {
+			var sTop = jQuery(window).scrollTop();  
+            var sTop = parseInt(sTop);  
+            var bodyWidth = jQuery(document.body).outerHeight(true);
+            if (bodyWidth>767) {
+               	if(sTop >= 130){
+					jQuery('#zyn-header.navbar').css('padding','5px');
+                }
+                if (sTop < 130) {
+					jQuery('#zyn-header.navbar').css('padding','50px 0 0 5px');
+                }
+            }
+            //绑定滚动条事件   
+            jQuery(window).bind("scroll", function () {  
+                var sTop = jQuery(window).scrollTop();  
+                var sTop = parseInt(sTop);  
+                var bodyWidth = "";
+                if (sTop >=260) {
+                	jQuery('.rollbar').css('display','block');
+                }
+                if (sTop <260) {
+                	jQuery('.rollbar').css('display','none');
+                }
+                bodyWidth = jQuery(document.body).outerHeight(true);
+                if (bodyWidth>767) {
+                	if(sTop >= 80){
+						jQuery('#zyn-header.navbar').css('padding','5px');
+						bodyWidth = "";
+                	}
+                	if (sTop < 80) {
+						jQuery('#zyn-header.navbar').css('padding','50px 0 0 5px');
+						bodyWidth = "";
+                	}
+                }
+            });
+        });
+	</script>
+	</div>
+	

@@ -1,0 +1,14 @@
+						<aside id="doc_category">
+							<div class="panel panel-zyn hidden-xs">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-tags newicon"></span> 标签云
+								</div>
+								<div class="d_tags">
+									{volist name='cates' id='cate'}
+									<a href="/Art/?cate={$cate.id}">
+										 {$cate.cateName}   <span style="float:right">({$cate.num})</span>
+									</a>
+									{/volist}
+								</div>
+							</div>
+						</aside>

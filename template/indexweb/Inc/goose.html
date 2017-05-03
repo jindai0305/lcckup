@@ -1,0 +1,23 @@
+						<aside id="zyn_latest_comments-2">
+							<div class="panel panel-zyn hidden-xs">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-tree-deciduous newicon"></span> 雁过留声
+									<span class="panel-remove glyphicon glyphicon-remove-circle"></span>
+									<span class="panel-toggle glyphicon glyphicon-upload"></span>
+								</div>
+								<ul class="list-group list-group-flush">
+									{volist name='RandArray' id='rand'}
+										<li class="list-group-item">
+											<span class="author-avatar">
+												<img data-url="{$rand.imgurl}" class="avatar avatar-40 photo" height="40" width="40">
+											</span>
+											<span class="comment-log">
+												<a href="/Home/ArtList/ArtInfo/id/{$rand.tid}#comments-title">
+													{$rand.content}
+												</a>
+											</span>
+										</li>
+									{/volist}
+								</ul>
+							</div>
+						</aside>

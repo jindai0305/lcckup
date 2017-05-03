@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>lcck | 关于作者</title>   
+        <!-- Bootstrap -->
+		<link rel="icon" href="__INDEX__/images/icon.png" type="image/x-icon" />
+		<link href="__INDEX__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
+        <script src="__INDEX__/bootstrap/js/jquery.min.js"></script>	
+		<script src="__INDEX__/javascript/main.min.js"></script>
+		<script type="text/javascript" src="__INDEX__/javascript/vue.min.js"></script>
+    	<!-- <script type="text/javascript" src="__INDEX__/javascript/vue-router.min.js"></script> -->
+    	<script type="text/javascript" src="__INDEX__/javascript/vue-resource.min.js"></script>
+        <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<script type="text/javascript">
+		$(function () {
+            jQuery('#aboutme').addClass('active');
+			jQuery('.author-avatar img').each(function () {
+                var url = jQuery(this).attr('data-url');
+                jQuery(this).attr('src', url);
+            });
+		});
+		</script>
+		
+    </head>
+    <body class="nav-fixed">
+		<!--顶部静态导航-->
+		{include file="../template/index/Inc/top.html" /}
+		    <!--主体内容-->
+		<div id="zyn-bodyer">
+			<!-- 搜索框 单独放出来了 -->
+			{include file="../template/index/Inc/searchInc.html" /}
+			<div class="container" id="containRow">
+				<!--.container 类用于固定宽度并支持响应式布局的容器。-->
+				<div class="row">
+					<!-- 左侧板块 -->
+					<div id="mainbody" class="col-md-8">
+						<div id="ie-warning" class="alert alert-danger fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<span class="glyphicon glyphicon-exclamation-sign"></span> 请注意，该网站并不支持低于IE8的浏览器，为了获得最佳效果，推荐使用谷歌浏览器。
+						</div>
+						<!-- 当屏幕拉倒底发起数据请求过度gif -->
+						<div id="loading" v-if="!(aboutReady)" style="text-align:center;">
+							<img width="32" height="32" src="__INDEX__/images/ico_loading.gif" />
+						</div>
+						<div id="article-list" v-if="aboutReady">
+							<article class="excerpt excerpt-first" v-html="about">
+							</article>
+						</div>
+						<div class="pagination">
+							<!--pagation本来就是BootStrap的类，现在用的是自定义的Bootstrap类-->
+							<ul></ul>
+						</div>
+					</div>
+					<!-- 右侧板块 -->
+					<aside class="col-md-4" id="sidebar">
+						<!-- 关注我 -->
+						{include file="../template/index/Inc/followMe.html" /}
+						<!-- 雁过留声 -->
+						{include file="../template/index/Inc/goose.html" /}
+						<!-- 友情链接 -->
+						{include file="../template/index/Inc/links.html" /}					
+				</aside>
+				</div>
+			</div>
+		</div>
+		<!--页脚版权声明-->
+		{include file="../template/index/Inc/footer.html" /}
+        <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+        <script src="__INDEX__/bootstrap/js/bootstrap.min.js"></script> 
+		</script>
+		<script type="text/javascript">
+		var vm = new Vue({
+	            el:"#containRow",
+	            data:function(){
+	                return {
+	                    aboutReady:false,
+	                    isSearch:false,
+	                    about:"",
+	                    yglsDataList:[]
+	                }
+	            },
+	            created:function(){
+					this.$http({
+						url:'/about/getIndexPage',
+						method:"get",
+		                emulateJSON:true
+					}).then(function(response){
+						console.log(response);
+						var yglsObj = response.body.yglsData;
+						if (yglsObj) {this.yglsDataList = yglsObj;}
+						var aboutObj = response.body.aboutData;
+						if (aboutObj) {
+							this.about=aboutObj;
+						}else{
+							this.about="<span style='color:red'>暂时还没有关于我哦，快去添加吧</span>";
+						}
+
+						this.aboutReady=true;
+					},function(response){
+						console.log("error");
+					});
+				},
+	        })
+		</script>
+    </body>
+</html> 

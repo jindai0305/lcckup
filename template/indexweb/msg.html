@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>lcck | 留言板</title>   
+		<link rel="icon" href="__INDEX__/images/icon.png" type="image/x-icon" />
+		<link href="__INDEX__/bootstrap/css/ownboot.css" rel="stylesheet">
+        <script src="__INDEX__/bootstrap/js/jquery.min.js"></script>	
+		<script src="__INDEX__/javascript/main.min.js"></script>	
+		<script src="__INDEX__/javascript/msg.min.js"></script>
+		<script type="text/javascript" src="__INDEX__/javascript/vue.min.js"></script>
+    	<script type="text/javascript" src="__INDEX__/javascript/vue-resource.min.js"></script>	
+        <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<script type="text/javascript">
+			$(function () {
+	            jQuery('#leavemsg').addClass('active');
+	            //如果对应的选项参数没有设置，将使用更改后的默认设置。
+	            jQuery.ajaxSetup({ cache: false });
+	            var pageindex = {$pageindex};
+	            var pagesize = {$pagesize};
+	            //从邮件链接过来的会用到下面三个参数
+	            var rootCmtId = {$rootCmdId};
+	            var newCmtId = {$newId};
+	            var cmtId = {$CmdId};
+	            var flag = {$flag};            //判断是否是从邮件链接过来
+	            GenerateComments("/pageIndex/" + pageindex + "/pageSize/" + pagesize, flag, rootCmtId,newCmtId, cmtId);
+	        });
+		</script>
+		
+    </head>
+    <body class="nav-fixed">
+		<!--顶部静态导航-->
+		{include file="../template/indexweb/Inc/top.html" /}
+		 <!--主体内容-->
+		<div id="zyn-bodyer">
+			<!-- 搜索框 单独放出来了 -->
+			{include file="../template/indexweb/Inc/searchInc.html" /}
+			<div class="container" id="containRow">
+				<!--.container 类用于固定宽度并支持响应式布局的容器。-->
+				<div class="row">
+				 <!--主体-->
+					<div id="mainbody" class="col-md-12" style="padding-top: 10px; padding-bottom: 10px;">
+						<div id="ie-warning" class="alert alert-danger fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<span class="glyphicon glyphicon-exclamation-sign"></span> 请注意，lcckBlog并不支持低于IE8的浏览器，为了获得最佳效果，推荐使用FireFox浏览器。
+						</div>
+						
+						<article class="article container well" style="text-align:center;">
+							<header class="pageheader clearfix">
+								<h1 class="">
+									<a href="/msg.html">留言板</a>
+								</h1>
+							</header>
+							<div id="leavemsg" class="article-content">
+								<p style="margin-bottom:0px;">
+									<img class="article-emot inline" src="/static/images/watermelon.png" style="display: inline;">
+								</p>
+								<p style="margin-bottom:0px;">嗯，留言板就先做成这样吧，如果你有好的建议和想法可以给我留言。</p>
+								<p style="margin-bottom:0px;">(本站无需注册,起个昵称,输入正确邮箱即可留言/评论)</p>
+							</div>
+						</article>
+						<div id="comments-template">
+							<div class="comments-wrap">
+								<div id="comments" data-url="/msg.html">
+									<h3 id="comments-title" class="comments-header alert alert-info">
+										{$num}条留言&nbsp; &nbsp;  <a style="color:red" href="/Msg#submit">快速留言&gt;&gt;&gt;</a>
+									</h3>
+									<div id="loading-comments" style="display: none;">
+										<img src="__INDEX__/images/ico_loading.gif">
+									</div>
+								</div>
+								 <div id="respond" class="comment-respond">
+									<h3 id="reply-title" class="comment-reply-title">
+										<i class="fa fa-pencil"></i>
+										欢迎留言
+										<small>
+											<a rel="nofollow" id="cancel-comment-reply-link" href="" style="display:none;">
+												取消回复
+											</a>
+										</small>
+									</h3>
+									<form novalidate="novalidate" action="" method="post" id="commentform" class="comment-form">
+										<input id="vid" name="VId" value="" type="hidden">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<span class="glyphicon glyphicon-user"></span>
+														</div>
+														{if condition="$login"}
+															<input type="text" size="20" id="vname" name="VName" class="form-control" value="{$uInfo.uname}" disabled="true" required="">
+														{else /}
+															<input type="text" size="20" id="vname" name="VName" class="form-control" maxlength="12" placeholder="起个昵称吧" value="" required=""> 
+														{/if}
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="input-group">
+														{if condition="$login"}
+															<input type="text" size="20" id="vemail" name="VEmail" class="form-control" value="{$uInfo.email}" disabled="true" required="">
+														{else /}
+															<input type="text" size="20" id="vemail" name="VEmail" class="form-control" placeholder="请输入您的邮箱" value="" required=""> 
+														{/if}
+														<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<textarea id="comment" class="form-control" placeholder="赶快发表你的见解吧！" name="LMessage" cols="30" rows="3" required=""></textarea>
+										<div id="loading" style="display: none;"> <img src="__INDEX__/images/ico_loading.gif"> <span>正在提交, 请稍候...</span></div><div id="error" style="display: none;">#</div>
+										<p class="form-submit" style="text-align:center">
+											<input name="submit" class="hiddeninput" id="submit" value="发表留言" type="button" onclick="Comment(0,0)">   
+										</p>
+									</form>
+									<script type="text/javascript">
+										jQuery(function () {
+								    	jQuery('#vname').focus(function(){
+								    		$("#submit").attr("disabled", true); 
+								    		if (jQuery('#error1')) {jQuery('#error1').remove();}
+								    	});
+								    	jQuery('#vemail').focus(function(){
+								    		if (jQuery('#error2')) {jQuery('#error2').remove();}
+								    	});
+								    	jQuery('#comment').focus(function(){
+								    		if (jQuery('#error3')) {jQuery('#error3').remove();}
+								    	});
+									 	jQuery('#vname').blur(function(){
+									 		$("#submit").removeAttr("disabled", true); 
+									 		var uNa=jQuery('#vname').val();
+									 		if (uNa=="") {return false;}
+									 		else{
+									 			var num=0;
+									 			$.getJSON('/Data/ViolationWords.json', function(data){
+									 				$.each(data, function (k, v) {
+									 					if (uNa.indexOf(v)!=-1) {
+									 						num=1;
+									 						$html='<label id="error1" for="comment" class="error">该用户名含有关键词"'+v+'"</label>';
+															jQuery('#vname').after($html);
+															return false;
+									 					}
+									 				});
+									 				if (num==0) {checkName(uNa);}
+												});
+									 		}
+									 	});
+									});
+								</script>
+								</div>
+								<input id="SessionName" type="hidden" value="{$Think.session.login.uname}">
+								<input id="SessionEmail" type="hidden" value="{$Think.session.login.email}">
+								<div id="addComm"></div>
+								<!-- #respond -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--页脚版权声明-->
+		{include file="../template/indexweb/Inc/footer.html" /}
+        <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
+        <script src="__INDEX__/bootstrap/js/bootstrap.min.js"></script> 
+    </body>
+</html> 

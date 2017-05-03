@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" media="screen" charset="utf-8" rel="stylesheet" href="__ADMIN__/css/style.account-1.1.css" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/page.css" media="all" />
+<link charset="utf-8" rel="stylesheet" href="__ADMIN__/css/personal.record-1.0.css" media="all" />
+<style type="text/css"> 
+.tip-faq{
+  clear:both;
+  margin-top:0px;
+}
+#J-table-consume{
+  margin-bottom:40px;
+}
+.ui-form-tips .m-cue{
+   background-position: -27px -506px;
+   *background-position: -27px -505px;
+}
+#J-set-date a{
+  font-family:宋体;
+}
+.select{ height:26px!important; line-height:11px!important;}
+</style>
+<script language="javascript" type="text/javascript" src="__ADMIN__/js/jquery.min.js"></script>
+<script>
+function CheckAll(form)
+{
+  for (var i=0;i<form.elements.length;i++)
+    {
+    var e = form.elements[i];
+    if (e.Name != "chkAll")
+       e.checked = form.chkAll.checked;
+    }
+}
+
+function DelAll()
+{
+  if(Checked()  <= 0){
+    alert("您至少选择1条信息!");
+  } 
+  else{
+    if(confirm("确定要删除选择的信息吗？")){
+      form.action="__URL__/delUser";
+      form.submit();
+    }
+  }
+}
+function Checked()
+{
+  var j = 0
+  for(i=0;i < document.form.elements.length;i++){
+    if(document.form.elements[i].name == "adid[]"){
+      if(document.form.elements[i].checked){
+        j++;
+      }
+    }
+  }
+  return j;
+}
+</script>
+</head>
+<!--[if lt IE 7]><body class="ie6"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
+<!--[if !IE]><!-->
+<body>
+<!--<![endif]-->
+<div id="container" class="ui-container">
+  <div id="content" class="ui-content fn-clear" coor="default" coor-rate="0.02">
+    <div class="ui-grid-21" coor="content">
+      <div class="ui-grid-21 ui-grid-right record-tit" coor="title">
+        <h2 class="ui-tit-page">游客列表</h2>
+        <div class="record-tit-amount">
+          <p>总共有<span class="number">{$ct}</span>条数据 </p>
+        </div>
+      </div>
+      <div class="ui-grid-21 ui-grid-right fn-clear" coor="total">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="right" style="padding-right:10px;">
+              </td>
+            </tr>
+          </table>
+    </div>
+      <form method="get" action="#" name="topSearchForm" class="ui-grid-21 ui-grid-right ui-form">
+        <div class="ui-grid-21 ui-grid-right record-search">
+          <div id="J-advanced-filter-option" class="">
+            <div class="record-search-time fn-clear">
+              <div class="ui-form-item ui-form-item-time">            
+                <label class="ui-form-label" for="J-start">昵称：</label>
+                <div class="ui-form-content">
+                  <input type="text" name="keywords" value="{$keywords}" class="ui-input search-keyword" id="J-keyword">
+                </div>
+                
+                <div class="submit-time-container ">
+                  <div class="submit-time ui-button ui-button-sorange" >
+                    <input type="submit" value=" 查 找 " />
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+    <form name="form" method="post" action="#">
+      <div class="ui-grid-21 ui-grid-right fn-clear" id="J-table-consume" coor="consumelist">
+      <div class="ui-tab">
+        <div class="ui-tab-trigger">
+          <ul class="fn-clear">
+            <li class="ui-tab-trigger-item  ui-tab-trigger-item-current">
+            <a href="javascript:;" class="ui-tab-trigger-text">游客列表</a>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-tab-container" id="myScene">
+          <div class="ui-tab-container-item ui-tab-container-item-current">
+            <div class="amount-scheme-a fn-clear">
+              <table id="tradeRecordsIndex" class="ui-table">
+                <thead>
+                  <tr>
+                    <th class="checkbox"><input id="chkAll" onclick="CheckAll(this.form)" value="checkbox" name="chkAll" type="checkbox" class="checkbox"></th>
+                    <th class="info">头像</th>
+                    <th class="info">昵称</th>
+                    <th class="info">联系邮箱</th>
+                    <th class="info">登录IP</th>
+                    <th class="info">最后活跃时间</th>
+                    <th class="info">操作</th>
+                  </tr>
+                  {volist name='list' id='ls'}
+                  <tr>
+                    <th class="checkbox"> <input type="checkbox" class="checkbox" value="{$ls.id}" name="adid[]" ></th>
+                    <th class="info"><img src="/uploads/uface/{$ls.uface}" width="30px" height="30px"></th>
+                    <th class="info">{$ls.uname}</th>
+                    <th class="info">{$ls.email}</th>
+                    <th class="info">{$ls.uLoadIp}</th>
+                    <th class="info">{$ls.pubtime|date="Y-m-d H:i",###}</th>
+                    <th class="info"><a href='__URL__/adminInfo/id/{$ls.id}'>更改头像</a></th>
+                  </tr>
+                  {/volist}
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="fn-clear">
+              <div class="iconTip fn-left"><a class="js-add-contact"><span></span></a> <a href="javascript:;" onclick="DelAll();">删除会员</a></div>
+            </div>
+            <div class="fn-clear" style="text-align: center">
+              <div class="pagination">{$page}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /交易记录-->
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

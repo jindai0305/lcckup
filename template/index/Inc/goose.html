@@ -1,0 +1,22 @@
+						<aside id="zyn_latest_comments-2">
+							<div class="panel panel-zyn hidden-xs">
+								<div class="panel-heading">
+									<span class="glyphicon glyphicon-tree-deciduous newicon"></span> 雁过留声
+									<span class="panel-remove glyphicon glyphicon-remove-circle"></span>
+									<span class="panel-toggle glyphicon glyphicon-upload"></span>
+								</div>
+								<ul class="list-group list-group-flush">
+									<template v-for="item in yglsDataList">
+										<li class="list-group-item">
+											<span class="author-avatar">
+												<img  :src="item.imgurl" class="avatar avatar-40 photo" height="40" width="40">
+											</span>
+											<span class="comment-log">
+												<a :href="item.infourl" v-text="item.content">
+												</a>
+											</span>
+										</li>
+									</template>
+								</ul>
+							</div>
+						</aside>
